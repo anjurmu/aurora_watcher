@@ -1,3 +1,4 @@
+import 'package:aurora_watcher/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class MyLocationPage extends StatelessWidget {
@@ -17,7 +18,7 @@ class MyLocationPage extends StatelessWidget {
         ),
       ),
       child: Center(
-        child: Text("My Location"),
+        child: Text(AppLocalizations.of(context)!.myLocation),
       ),
     );
   }

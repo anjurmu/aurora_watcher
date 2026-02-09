@@ -1,4 +1,5 @@
 import 'package:aurora_watcher/data/notifiers.dart';
+import 'package:aurora_watcher/l10n/app_localizations.dart';
 import 'package:aurora_watcher/views/pages/home_page.dart';
 import 'package:aurora_watcher/views/pages/my_location_page.dart';
 import 'package:aurora_watcher/views/pages/watcher_page.dart';
@@ -14,7 +15,7 @@ class WidgetTree extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Aurora Watcher"),
+        title: Text(AppLocalizations.of(context)!.appTitle),
         centerTitle: true,
       ),
       body: ValueListenableBuilder(

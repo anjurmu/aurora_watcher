@@ -1,4 +1,5 @@
 import 'package:aurora_watcher/data/notifiers.dart';
+import 'package:aurora_watcher/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class NavbarWidget extends StatelessWidget {
@@ -11,11 +12,17 @@ class NavbarWidget extends StatelessWidget {
       builder: (context, selectedPage, child) {
         return NavigationBar(
           destinations: [
-            NavigationDestination(icon: Icon(Icons.home), label: "Home"),
-            NavigationDestination(icon: Icon(Icons.alarm), label: "Watcher"),
+            NavigationDestination(
+              icon: Icon(Icons.home),
+              label: AppLocalizations.of(context)!.home,
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.alarm),
+              label: AppLocalizations.of(context)!.watcher,
+            ),
             NavigationDestination(
               icon: Icon(Icons.place),
-              label: "My Location",
+              label: AppLocalizations.of(context)!.myLocation,
             ),
           ],
           onDestinationSelected: (int value) {

@@ -1,3 +1,4 @@
+import 'package:aurora_watcher/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class WatcherPage extends StatelessWidget {
@@ -17,7 +18,7 @@ class WatcherPage extends StatelessWidget {
         ),
       ),
       child: Center(
-        child: Text("Watcher"),
+        child: Text(AppLocalizations.of(context)!.watcher),
       ),
     );
   }

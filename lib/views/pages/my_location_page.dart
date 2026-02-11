@@ -2,13 +2,7 @@ import 'package:aurora_watcher/data/station.dart';
 import 'package:aurora_watcher/data/weather.dart';
 import 'package:aurora_watcher/data/weather_repository.dart';
 import 'package:aurora_watcher/l10n/app_localizations.dart';
-import 'package:aurora_watcher/util/fmi_station_util.dart';
-import 'package:aurora_watcher/util/latlon_util.dart';
-import 'package:aurora_watcher/util/location_util.dart';
-import 'package:aurora_watcher/util/weather_util.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MyLocationPage extends StatefulWidget {
   const MyLocationPage({super.key});

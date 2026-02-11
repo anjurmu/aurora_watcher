@@ -35,7 +35,6 @@ class WeatherRepository {
     }
 
     if (!weatherExpired()) {
-      print("Using cached weather");
       return weather;
     }
 
@@ -45,7 +44,6 @@ class WeatherRepository {
 
   bool weatherExpired() {
     if (weather != null) {
-      print(DateTime.now());
       return (DateTime.now().difference(weather!.time) > Duration(minutes: 10));
     }
     return true;

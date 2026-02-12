@@ -1,4 +1,5 @@
 import 'package:aurora_watcher/l10n/app_localizations.dart';
+import 'package:aurora_watcher/util/database_service.dart';
 import 'package:flutter/material.dart';
 
 class WatcherPage extends StatelessWidget {
@@ -17,8 +18,17 @@ class WatcherPage extends StatelessWidget {
           ),
         ),
       ),
-      child: Center(
-        child: Text(AppLocalizations.of(context)!.watcher),
+      child: Column(
+        children: [
+          Text(AppLocalizations.of(context)!.watcher),
+          FilledButton(
+            onPressed: () async {
+              final snapshot = await DatabaseService().read(path: "data");
+              print(snapshot?.value);
+            },
+            child: Text("Get data1"),
+          ),
+        ],
       ),
     );
   }

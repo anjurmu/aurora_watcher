@@ -1,32 +1,65 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
-
-import {setGlobalOptions} from "firebase-functions";
-import {onRequest} from "firebase-functions/https";
+import { setGlobalOptions } from "firebase-functions";
+import { onSchedule } from "firebase-functions/v2/scheduler";
 import * as logger from "firebase-functions/logger";
+import * as admin from "firebase-admin";
+import axios from "axios";
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
-
-// For cost control, you can set the maximum number of containers that can be
-// running at the same time. This helps mitigate the impact of unexpected
-// traffic spikes by instead downgrading performance. This limit is a
-// per-function limit. You can override the limit for each function using the
-// `maxInstances` option in the function's options, e.g.
-// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// In the v1 API, each function can only serve one request per container, so
-// this will be the maximum concurrent request count.
 setGlobalOptions({ maxInstances: 10 });
 
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+interface AuroraStation {
+  "Aika": string;
+  "R-luku": number | null;
+  "Ylempi raja-arvo": number;
+  "Alempi raja-arvo": number;
+  "Asema": string;
+  "Leveyspiiri": number;
+  "Pituuspiiri": number;
+}
+
+interface ApiResponse {
+  data: Record<string, AuroraStation>;
+}
+
+
+admin.initializeApp();
+
+export const fetchAuroraData = onSchedule(
+  {
+    schedule: "every 5 minutes",
+    region: "europe-north1",
+    memory: "256MiB",
+  },
+  async () => {
+    try {
+      const response = await axios.get<ApiResponse>(
+        "https://space.fmi.fi/MIRACLE/RWC/data/r_index_latest_fi.json",
+        { timeout: 5000 }
+      );
+
+      const stations = response.data.data;
+
+      const updates: Record<string, unknown> = {};
+
+      for (const stationCode in stations) {
+        const station = stations[stationCode];
+
+        updates[`aurora/${stationCode}`] = {
+          time: station["Aika"],
+          rValue: station["R-luku"],
+          upperLimit: station["Ylempi raja-arvo"],
+          lowerLimit: station["Alempi raja-arvo"],
+          name: station["Asema"],
+          lat: station["Leveyspiiri"],
+          lon: station["Pituuspiiri"],
+          updatedAt: Date.now(),
+        };
+      }
+
+      await admin.database().ref().update(updates);
+
+      logger.info("Aurora data päivitetty");
+    } catch (error) {
+      logger.error("Virhe API-haussa", error);
+    }
+  }
+);

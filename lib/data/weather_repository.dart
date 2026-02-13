@@ -5,7 +5,6 @@ import 'package:aurora_watcher/util/latlon_util.dart';
 import 'package:aurora_watcher/util/location_util.dart';
 import 'package:aurora_watcher/util/weather_util.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class WeatherRepository {
   WeatherRepository._internal();

@@ -2,5 +2,13 @@
     "appTitle": "Aurora Watcher",
     "home": "Home",
     "watcher": "Watcher",
-    "myLocation": "My Location"
+    "myLocation": "My Location",
+    "weatherStation": "Weather station:",
+    "temperature": "Temperature:",
+    "cloudiness": "Cloudiness:",
+    "noAurora": "Aurora unlikely",
+    "lowAurora": "Low chance for aurora",
+    "moderateAurora": "Moderate chance for aurora",
+    "highAurora": "High chance for aurora",
+    "noAuroraData": "Missing aurora data"
 }

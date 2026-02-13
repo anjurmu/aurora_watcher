@@ -53,6 +53,24 @@ export const fetchAuroraData = onSchedule(
           lon: station["Pituuspiiri"],
           updatedAt: Date.now(),
         };
+
+        let moderateChance: number = station["Alempi raja-arvo"] + (station["Ylempi raja-arvo"] - station["Alempi raja-arvo"]) / 2;
+        if (station["R-luku"] !== null && station["R-luku"] >= moderateChance) {
+          let titleText: string = "Aurora Alert";
+          let bodyText: string = "Moderate chance for aurora";
+
+          if (station["R-luku"] >= station["Ylempi raja-arvo"]) {
+            bodyText = "High chance for aurora";
+          }
+
+          await admin.messaging().send({
+            topic: stationCode,
+            notification: {
+              title: titleText,
+              body: bodyText,
+            }
+          });
+        }
       }
 
       await admin.database().ref().update(updates);

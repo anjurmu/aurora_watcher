@@ -1,4 +1,5 @@
 class Aurora {
+  final String stationCode;
   final DateTime time;
   final int? rValue;
   final int upperLimit;
@@ -9,6 +10,7 @@ class Aurora {
   final DateTime updatetAt;
 
   Aurora({
+    required this.stationCode,
     required this.time,
     required this.rValue,
     required this.upperLimit,

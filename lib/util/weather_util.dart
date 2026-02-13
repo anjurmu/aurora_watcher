@@ -28,17 +28,26 @@ class WeatherUtil {
     final document = XmlDocument.parse(response.body);
 
     final Map<DateTime, double> t2mMap = {};
-    final Map<DateTime, int> cloudMap = {};
+    final Map<DateTime, int?> cloudMap = {};
 
     // fmi::observations::weather::simple palauttaa BsWfsElementtejä
     final elements = document.findAllElements('BsWfsElement', namespace: '*');
 
     for (final element in elements) {
-      final timeStr = element.findAllElements('Time', namespace: '*').first.innerText;
-      final name = element.findAllElements('ParameterName', namespace: '*').first.innerText;
-      final valueStr = element.findAllElements('ParameterValue', namespace: '*').first.innerText;
+      final timeStr = element
+          .findAllElements('Time', namespace: '*')
+          .first
+          .innerText;
+      final name = element
+          .findAllElements('ParameterName', namespace: '*')
+          .first
+          .innerText;
+      final valueStr = element
+          .findAllElements('ParameterValue', namespace: '*')
+          .first
+          .innerText;
 
-      if (valueStr.toLowerCase() == 'nan') continue;
+      //if (valueStr.toLowerCase() == 'nan') continue;
 
       final time = truncateToMinutes(DateTime.parse(timeStr));
       final value = double.tryParse(valueStr);
@@ -48,16 +57,22 @@ class WeatherUtil {
       if (name == 't2m') {
         t2mMap[time] = value;
       } else if (name == 'N') {
-        cloudMap[time] = value.round();
+        if (valueStr.toLowerCase() == 'nan') {
+          cloudMap[time] = null;
+        } else {
+          cloudMap[time] = value.round();
+        }
       }
     }
 
     // Etsitään yhteiset aikaleimat ja lajitellaan ne (uusin viimeiseksi)
-    final commonTimes = t2mMap.keys.where((t) => cloudMap.containsKey(t)).toList()
-      ..sort();
+    final commonTimes =
+        t2mMap.keys.where((t) => cloudMap.containsKey(t)).toList()..sort();
 
     if (commonTimes.isEmpty) {
-      throw Exception('Ei yhteisiä havaintoja (t2m: ${t2mMap.length}, N: ${cloudMap.length})');
+      throw Exception(
+        'Ei yhteisiä havaintoja (t2m: ${t2mMap.length}, N: ${cloudMap.length})',
+      );
     }
 
     final latestTime = commonTimes.last;
@@ -65,7 +80,7 @@ class WeatherUtil {
     return Weather(
       time: latestTime,
       temperature: t2mMap[latestTime]!,
-      cloudiness: cloudMap[latestTime]!,
+      cloudiness: cloudMap[latestTime],
     );
   }
 

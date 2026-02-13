@@ -118,6 +118,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'My Location'**
   String get myLocation;
+
+  /// No description provided for @weatherStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather station:'**
+  String get weatherStation;
+
+  /// No description provided for @temperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature:'**
+  String get temperature;
+
+  /// No description provided for @cloudiness.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloudiness:'**
+  String get cloudiness;
+
+  /// No description provided for @noAurora.
+  ///
+  /// In en, this message translates to:
+  /// **'Aurora unlikely'**
+  String get noAurora;
+
+  /// No description provided for @lowAurora.
+  ///
+  /// In en, this message translates to:
+  /// **'Low chance for aurora'**
+  String get lowAurora;
+
+  /// No description provided for @moderateAurora.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate chance for aurora'**
+  String get moderateAurora;
+
+  /// No description provided for @highAurora.
+  ///
+  /// In en, this message translates to:
+  /// **'High chance for aurora'**
+  String get highAurora;
+
+  /// No description provided for @noAuroraData.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing aurora data'**
+  String get noAuroraData;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

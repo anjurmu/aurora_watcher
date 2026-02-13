@@ -1,7 +1,7 @@
 class Weather {
   final DateTime time;
   final double temperature;
-  final int cloudiness;
+  final int? cloudiness;
 
   Weather({
     required this.time,

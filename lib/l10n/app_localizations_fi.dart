@@ -19,4 +19,28 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get myLocation => 'Oma Paikka';
+
+  @override
+  String get weatherStation => 'Sääasema:';
+
+  @override
+  String get temperature => 'Lämpötila:';
+
+  @override
+  String get cloudiness => 'Pilvisyys:';
+
+  @override
+  String get noAurora => 'Revontulet epätodennäköisiä';
+
+  @override
+  String get lowAurora => 'Pieni mahdollisuus revontulille';
+
+  @override
+  String get moderateAurora => 'Kohtalainen mahdollisuus revontulille';
+
+  @override
+  String get highAurora => 'Suuri mahdollisuus revontulille';
+
+  @override
+  String get noAuroraData => 'Ei revontulitietoja';
 }

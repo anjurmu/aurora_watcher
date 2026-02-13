@@ -19,4 +19,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get myLocation => 'My Location';
+
+  @override
+  String get weatherStation => 'Weather station:';
+
+  @override
+  String get temperature => 'Temperature:';
+
+  @override
+  String get cloudiness => 'Cloudiness:';
+
+  @override
+  String get noAurora => 'Aurora unlikely';
+
+  @override
+  String get lowAurora => 'Low chance for aurora';
+
+  @override
+  String get moderateAurora => 'Moderate chance for aurora';
+
+  @override
+  String get highAurora => 'High chance for aurora';
+
+  @override
+  String get noAuroraData => 'Missing aurora data';
 }

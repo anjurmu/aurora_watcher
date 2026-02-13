@@ -2,5 +2,13 @@
     "appTitle": "RevontuliVahti",
     "home": "Koti",
     "watcher": "Vahti",
-    "myLocation": "Oma Paikka"
+    "myLocation": "Oma Paikka",
+    "weatherStation": "Sääasema:",
+    "temperature": "Lämpötila:",
+    "cloudiness": "Pilvisyys:",
+    "noAurora": "Revontulet epätodennäköisiä",
+    "lowAurora": "Pieni mahdollisuus revontulille",
+    "moderateAurora": "Kohtalainen mahdollisuus revontulille",
+    "highAurora": "Suuri mahdollisuus revontulille",
+    "noAuroraData": "Ei revontulitietoja"
 }

@@ -41,6 +41,7 @@ class AuroraRepository {
         snapshot.value as Map<dynamic, dynamic>;
 
     dynamic nearestStationData;
+    String nearestStationCode = "";
     double minDistance = double.infinity;
 
     auroraData.forEach((stationCode, stationData) {
@@ -54,10 +55,12 @@ class AuroraRepository {
       if (d < minDistance) {
         minDistance = d;
         nearestStationData = stationData;
+        nearestStationCode = stationCode;
       }
     });
 
     return Aurora(
+      stationCode: nearestStationCode,
       time: DateTime.parse(nearestStationData["time"]),
       rValue: nearestStationData["rValue"],
       upperLimit: nearestStationData["upperLimit"],

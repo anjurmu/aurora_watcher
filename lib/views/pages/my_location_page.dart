@@ -1,3 +1,5 @@
+import 'package:aurora_watcher/data/aurora.dart';
+import 'package:aurora_watcher/data/aurora_repository.dart';
 import 'package:aurora_watcher/data/station.dart';
 import 'package:aurora_watcher/data/weather.dart';
 import 'package:aurora_watcher/data/weather_repository.dart';
@@ -14,15 +16,19 @@ class MyLocationPage extends StatefulWidget {
 class _MyLocationPageState extends State<MyLocationPage> {
   Weather? weather;
   Station? station;
-  bool loading = true;
+  Aurora? aurora;
+  bool loadingWeather = true;
+  bool loadingAurora = true;
   String? error;
 
   final WeatherRepository _weatherRepository = WeatherRepository();
+  final AuroraRepository _auroraRepository = AuroraRepository();
 
   @override
   void initState() {
     super.initState();
     loadWeather(false);
+    loadAurora();
   }
 
   Future<void> loadWeather(bool resetStation) async {
@@ -31,24 +37,47 @@ class _MyLocationPageState extends State<MyLocationPage> {
       station = _weatherRepository.station;
 
       setState(() {
-        loading = false;
+        loadingWeather = false;
       });
     } catch (e) {
       setState(() {
         error = e.toString();
-        loading = false;
+        loadingWeather = false;
+      });
+    }
+  }
+
+  Future<void> loadAurora() async {
+    try {
+      aurora = await _auroraRepository.getAurora();
+
+      if (aurora == null) {
+        error = "No aurora data";
+      }
+
+      setState(() {
+        loadingAurora = false;
+      });
+    } catch (e) {
+      setState(() {
+        error = e.toString();
+        loadingAurora = false;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (loading) {
-      return const CircularProgressIndicator();
+    if (loadingWeather || loadingAurora) {
+      return Center(
+        child: const CircularProgressIndicator(),
+      );
     }
 
     if (error != null) {
-      return Text("Virhe: $error");
+      return Center(
+        child: Text("Virhe: $error"),
+      );
     }
 
     return Container(
@@ -64,8 +93,10 @@ class _MyLocationPageState extends State<MyLocationPage> {
       ),
       child: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   AppLocalizations.of(context)!.myLocation,
@@ -75,8 +106,10 @@ class _MyLocationPageState extends State<MyLocationPage> {
                   icon: Icon(Icons.restart_alt),
                   onPressed: () {
                     setState(() {
-                      loading = true;
+                      loadingAurora = true;
+                      loadingWeather = true;
                       loadWeather(true);
+                      loadAurora();
                     });
                   },
                 ),
@@ -86,6 +119,9 @@ class _MyLocationPageState extends State<MyLocationPage> {
             Text(weather!.temperature.toString()),
             Text(weather!.cloudiness.toString()),
             Text(weather!.time.toString()),
+            Text(aurora!.rValue.toString()),
+            Text(aurora!.upperLimit.toString()),
+            Text(aurora!.lowerLimit.toString()),
           ],
         ),
       ),

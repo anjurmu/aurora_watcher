@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationUtil {
   // Kysyy luvan ja palauttaa true/false
@@ -32,12 +33,34 @@ class LocationUtil {
     if (!hasPermission) return null;
 
     LocationSettings locationSettings = const LocationSettings(
-      accuracy: LocationAccuracy.high, // nyt osa settings
+      accuracy: LocationAccuracy.high,
       distanceFilter: 10, // metrin tarkkuudella päivitys
     );
 
     return await Geolocator.getCurrentPosition(
       locationSettings: locationSettings,
     );
+  }
+
+  static Future<void> saveUserLocation(
+    double latitude,
+    double longitude,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setDouble('user_lat', latitude);
+    await prefs.setDouble('user_lon', longitude);
+  }
+
+  static Future<double?> loadUserLatitude() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    return prefs.getDouble('user_lat');
+  }
+
+  static Future<double?> loadUserLongitude() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    return prefs.getDouble('user_lon');
   }
 }

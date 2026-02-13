@@ -25,7 +25,7 @@ class WeatherRepository {
         await fetchNearestStation(position);
 
         FmiStationUtil.saveStation(station!);
-        saveUserLocation(position.latitude, position.longitude);
+        LocationUtil.saveUserLocation(position.latitude, position.longitude);
 
         weather = await WeatherUtil.fetchLatestObservation(
           fmisid: station!.fmisid,
@@ -61,10 +61,8 @@ class WeatherRepository {
   }
 
   Future<bool> hasUserMoved(Position position) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    double? savedUserLat = prefs.getDouble('user_lat');
-    double? savedUserLon = prefs.getDouble('user_lon');
+    double? savedUserLat = await LocationUtil.loadUserLatitude();
+    double? savedUserLon = await LocationUtil.loadUserLongitude();
     if (savedUserLat == null || savedUserLon == null) {
       return true;
     }
@@ -78,13 +76,6 @@ class WeatherRepository {
 
     const double moveTresholdKm = 15.0;
     return moveDistance > moveTresholdKm;
-  }
-
-  Future<void> saveUserLocation(double latitude, double longitude) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setDouble('user_lat', latitude);
-    await prefs.setDouble('user_lon', longitude);
   }
 
   Future<void> fetchNearestStation(Position position) async {

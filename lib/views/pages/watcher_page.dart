@@ -1,5 +1,5 @@
+import 'package:aurora_watcher/data/aurora_repository.dart';
 import 'package:aurora_watcher/l10n/app_localizations.dart';
-import 'package:aurora_watcher/util/database_service.dart';
 import 'package:flutter/material.dart';
 
 class WatcherPage extends StatelessWidget {
@@ -23,8 +23,9 @@ class WatcherPage extends StatelessWidget {
           Text(AppLocalizations.of(context)!.watcher),
           FilledButton(
             onPressed: () async {
-              final snapshot = await DatabaseService().read(path: "data");
-              print(snapshot?.value);
+              AuroraRepository repo = AuroraRepository();
+              final aurora = await repo.getAurora();
+              print(aurora!.name);
             },
             child: Text("Get data1"),
           ),

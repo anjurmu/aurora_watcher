@@ -1,4 +1,5 @@
 import 'package:aurora_watcher/firebase_options.dart';
+import 'package:aurora_watcher/util/notification_util.dart';
 import 'package:aurora_watcher/views/widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    NotificationUtil.requestNotificationPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -20,7 +20,6 @@ interface ApiResponse {
   data: Record<string, AuroraStation>;
 }
 
-
 admin.initializeApp();
 
 export const fetchAuroraData = onSchedule(
@@ -40,6 +39,9 @@ export const fetchAuroraData = onSchedule(
 
       const updates: Record<string, unknown> = {};
 
+      const COOLDOWN_MS = 30 * 60 * 1000; // 30 minuuttia
+      const NOW = Date.now();
+
       for (const stationCode in stations) {
         const station = stations[stationCode];
 
@@ -51,11 +53,23 @@ export const fetchAuroraData = onSchedule(
           name: station["Asema"],
           lat: station["Leveyspiiri"],
           lon: station["Pituuspiiri"],
-          updatedAt: Date.now(),
+          updatedAt: NOW,
         };
 
-        //let moderateChance: number = station["Alempi raja-arvo"] + (station["Ylempi raja-arvo"] - station["Alempi raja-arvo"]) / 2;
-        if (station["R-luku"] !== null && station["R-luku"] >= 0) { //moderateChance) {
+        const moderateChance: number = station["Alempi raja-arvo"] + (station["Ylempi raja-arvo"] - station["Alempi raja-arvo"]) / 2;
+
+        if (station["R-luku"] !== null && station["R-luku"] >=  moderateChance) {
+
+          const cooldownRef = admin.database().ref(`auroraCooldown/${stationCode}`);
+          const cooldownSnapshot = await cooldownRef.get();
+          
+          const lastAlertAt = cooldownSnapshot.exists() ? cooldownSnapshot.val().lastAlertAt : null;
+
+          if (lastAlertAt && NOW - lastAlertAt < COOLDOWN_MS) {
+            logger.info("Cooldown active for ", stationCode);
+            continue;
+          }
+
           let titleText: string = "Aurora Alert";
           let bodyText: string = "Moderate chance for aurora";
 
@@ -73,6 +87,8 @@ export const fetchAuroraData = onSchedule(
           });
 
           logger.info("Aurora alert: ", messageId);
+
+          await cooldownRef.set({lastAlertAt: NOW});
         } catch (e) {
           logger.error("Push failed", e);
         }

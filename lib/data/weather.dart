@@ -1,3 +1,4 @@
+// Luokka säätietojen säilömiseen
 class Weather {
   final DateTime time;
   final double temperature;

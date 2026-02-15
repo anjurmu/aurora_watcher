@@ -35,11 +35,14 @@ class _MyLocationPageState extends State<MyLocationPage> {
     loadLocationInfo();
   }
 
+  // Hakee sää ja revontulitiedot jos on lupa käyttää sijaintia
   Future<void> loadLocationInfo() async {
     final hasPermission = await LocationUtil.handleLocationPermission();
     if (!mounted) return;
+
     if (!hasPermission) {
       locationPermission = false;
+
       setState(() {
         loadingWeather = false;
         loadingAurora = false;
@@ -48,10 +51,12 @@ class _MyLocationPageState extends State<MyLocationPage> {
     }
     locationPermission = true;
 
+    // Sää ja revontulitietojen haku
     loadWeather(false);
     loadAurora();
   }
 
+  // Näyttää dialogin, josta voi mennä sovelluksen asetuksiin ja lupiin
   Future<void> showLocationPermissionDialog(BuildContext context) async {
     await showDialog(
       context: context,
@@ -59,6 +64,7 @@ class _MyLocationPageState extends State<MyLocationPage> {
     );
   }
 
+  // Hakee säätiedot ja asettaa pilvisyyden ikonin
   Future<void> loadWeather(bool resetStation) async {
     try {
       weather = await _weatherRepository.getWeather(resetStation);
@@ -79,6 +85,7 @@ class _MyLocationPageState extends State<MyLocationPage> {
     }
   }
 
+  // Hakee revontulitiedot
   Future<void> loadAurora() async {
     try {
       aurora = await _auroraRepository.getAurora();
@@ -100,6 +107,8 @@ class _MyLocationPageState extends State<MyLocationPage> {
     }
   }
 
+  // Asettaa pilvisyydelle ikonin
+  // Pilvisyys on asteikolla 0-8
   void setForecastIcon() {
     if (weather != null) {
       if (weather?.cloudiness == null) {
@@ -119,6 +128,7 @@ class _MyLocationPageState extends State<MyLocationPage> {
     }
   }
 
+  // Palauttaa revontulten mahdollisuudesta kertovan Text() widgetin
   Text getAuroraChance(BuildContext context) {
     if (aurora != null) {
       if (aurora!.rValue != null) {

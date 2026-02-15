@@ -65,6 +65,7 @@ class _WatcherPageState extends State<WatcherPage> {
     }
   }
 
+  // Katsotaan, onko vahti jo päällä
   Future<void> loadState() async {
     final subscribed = await DatabaseService().isSubscribed();
     if (!mounted) return;
@@ -73,6 +74,7 @@ class _WatcherPageState extends State<WatcherPage> {
     });
   }
 
+  // Laitetaan vahti päälle/pois
   Future<void> toggle(BuildContext context) async {
     // Tarkistetaan onko lupa lähettää ilmoituksia
     final bool notificationPermission =
@@ -91,6 +93,7 @@ class _WatcherPageState extends State<WatcherPage> {
     loadState();
   }
 
+  // Näyttää dialogin, josta voi mennä sovelluksen asetuksiin ja lupiin
   Future<void> showNotificationPermissionDialog(BuildContext context) async {
     await showDialog(
       context: context,
@@ -98,6 +101,7 @@ class _WatcherPageState extends State<WatcherPage> {
     );
   }
 
+  // Näyttää dialogin, josta voi mennä sovelluksen asetuksiin ja lupiin
   Future<void> showLocationPermissionDialog(BuildContext context) async {
     await showDialog(
       context: context,

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+// haversine funktio palauttaa kahden sijainnin välisen etäisyyden
 class LatlonUtil {
   static double haversine(
     double lat1,

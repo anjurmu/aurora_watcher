@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// Luokka databasen tietojen ja topiccien käsittelyyn
 class DatabaseService {
   static final FirebaseDatabase
   _firebaseDatabase = FirebaseDatabase.instanceFor(
@@ -26,7 +27,7 @@ class DatabaseService {
     final String? currentStationCode = prefs.getString('station_code');
 
     try {
-      // Tarkistetaan, onko subscripattu topicciin ja unscriptataan siitä pois
+      // Tarkistetaan, onko subscribattu topicciin ja unscriptataan siitä pois
       if (currentStationCode != null && currentStationCode.isNotEmpty) {
         await _fcm.unsubscribeFromTopic(currentStationCode);
         await prefs.remove('station_code');
@@ -43,7 +44,7 @@ class DatabaseService {
     }
   }
 
-  // Palautetaan true, jos on subscripattu jo johonkin topicciin
+  // Palautetaan true, jos on subscribattu jo johonkin topicciin
   Future<bool> isSubscribed() async {
     final prefs = await SharedPreferences.getInstance();
     final stationCode = prefs.getString('station_code');

@@ -4,7 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xml/xml.dart';
 
+// Luokka ilmatieteenlaitoksen sääasemien hakuun ja käsittelyyn
 class FmiStationUtil {
+  // Hakee kaikki automaattiset sääasemat
   static Future<List<Station>> fetchStations() async {
     final url = Uri.parse(
       'https://opendata.fmi.fi/wfs'
@@ -56,7 +58,7 @@ class FmiStationUtil {
         final lat = double.parse(parts[0]);
         final lon = double.parse(parts[1]);
 
-        // tarkistetaan, onko asema automaattinen sääasema
+        // Tarkistetaan, onko asema automaattinen sääasema
         // Etsi kaikki belongsTo-elementit
         final belongsToElements = m.findAllElements(
           'belongsTo',
@@ -99,6 +101,7 @@ class FmiStationUtil {
     return stations;
   }
 
+  // Hakee käyttäjää lähinnä olevan sääaseman
   static Station findNearestStation(
     double userLat,
     double userLon,
@@ -108,6 +111,7 @@ class FmiStationUtil {
       throw Exception('Station list is empty');
     }
 
+    // Käy asemat läpi ja palauttaa lähimmän
     Station? nearest;
     double minDistance = double.infinity;
 
@@ -129,6 +133,7 @@ class FmiStationUtil {
     return nearest!;
   }
 
+  // Tallentaa sääaseman preferenceihin
   static Future<void> saveStation(Station station) async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -138,6 +143,7 @@ class FmiStationUtil {
     await prefs.setDouble('station_lon', station.lon);
   }
 
+  // Hakee sääaseman preferenceistä
   static Future<Station?> loadStation() async {
     final prefs = await SharedPreferences.getInstance();
 

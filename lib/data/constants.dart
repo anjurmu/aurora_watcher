@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Tekstityylejä
 class KTextStyle {
   static const TextStyle titleText = TextStyle(
     fontSize: 30,

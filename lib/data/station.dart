@@ -1,3 +1,4 @@
+// Luokka sääaseman tietojen säilömiseen
 class Station {
   final String name;
   final int fmisid;

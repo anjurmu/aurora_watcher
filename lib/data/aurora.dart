@@ -1,3 +1,4 @@
+// Luokka revontulitietojen säilömiseen
 class Aurora {
   final String stationCode;
   final DateTime time;

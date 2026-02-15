@@ -2,7 +2,9 @@ import 'package:aurora_watcher/data/weather.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
 
+// Luokka säätietojen käsittelyyn
 class WeatherUtil {
+  // Hakee ja palauttaa annetun sääaseman viimeisimmät säätiedot
   static Future<Weather> fetchLatestObservation(int fmisid) async {
     final now = truncateToMinutes(DateTime.now().toUtc());
     final startTime = truncateToMinutes(now.subtract(const Duration(hours: 2)));
@@ -45,8 +47,6 @@ class WeatherUtil {
           .findAllElements('ParameterValue', namespace: '*')
           .first
           .innerText;
-
-      //if (valueStr.toLowerCase() == 'nan') continue;
 
       final time = truncateToMinutes(DateTime.parse(timeStr));
       final value = double.tryParse(valueStr);

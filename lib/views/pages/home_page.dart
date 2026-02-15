@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
     getWatcherStatus();
   }
 
+  // Katsoo, onko vahti päällä
   Future<void> getWatcherStatus() async {
     isWatcherOn = await DatabaseService().isSubscribed();
     if (!mounted) return;

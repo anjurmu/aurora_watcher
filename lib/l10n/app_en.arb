@@ -20,6 +20,10 @@
     "cancel": "Cancel",
     "openSettings": "Open settings",
 
+    "locationPermissionTitle": "Location disabled",
+    "locationPermissionContent": "Please allow device's location from the app settings.",
+
     "watcherDescription": "Sends notification when there is moderate or higher chance for aurora in closest Aurora station.",
-    "closestAurora": "Closest Aurora station: "
+    "closestAurora": "Closest Aurora station: ",
+    "locationDisabled": "Location disabled, please allow app to use device's location to use Watcher."
 }

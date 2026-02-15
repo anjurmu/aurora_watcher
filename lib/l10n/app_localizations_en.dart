@@ -57,8 +57,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openSettings => 'Open settings';
 
   @override
+  String get locationPermissionTitle => 'Location disabled';
+
+  @override
+  String get locationPermissionContent => 'Please allow device\'s location from the app settings.';
+
+  @override
   String get watcherDescription => 'Sends notification when there is moderate or higher chance for aurora in closest Aurora station.';
 
   @override
   String get closestAurora => 'Closest Aurora station: ';
+
+  @override
+  String get locationDisabled => 'Location disabled, please allow app to use device\'s location to use Watcher.';
 }

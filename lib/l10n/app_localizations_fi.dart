@@ -57,8 +57,17 @@ class AppLocalizationsFi extends AppLocalizations {
   String get openSettings => 'Avaa asetukset';
 
   @override
+  String get locationPermissionTitle => 'Sijainti pois käytöstä';
+
+  @override
+  String get locationPermissionContent => 'Salli sijainnin käyttäminen sovelluksen asetuksista.';
+
+  @override
   String get watcherDescription => 'Lähettää ilmoituksen kun revontulten mahdollisuus on kohtalainen tai korkeampi lähimmällä revontuliasemalla.';
 
   @override
   String get closestAurora => 'Lähin revontuliasema: ';
+
+  @override
+  String get locationDisabled => 'Sijainti pois käytöstä, anna sovelluksen käyttää laitteen sijaintia Vahdin käyttämiseen.';
 }

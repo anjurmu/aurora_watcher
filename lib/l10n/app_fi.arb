@@ -20,6 +20,10 @@
     "cancel": "Peruuta",
     "openSettings": "Avaa asetukset",
 
+    "locationPermissionTitle": "Sijainti pois käytöstä",
+    "locationPermissionContent": "Salli sijainnin käyttäminen sovelluksen asetuksista.",
+
     "watcherDescription": "Lähettää ilmoituksen kun revontulten mahdollisuus on kohtalainen tai korkeampi lähimmällä revontuliasemalla.",
-    "closestAurora": "Lähin revontuliasema: "
+    "closestAurora": "Lähin revontuliasema: ",
+    "locationDisabled": "Sijainti pois käytöstä, anna sovelluksen käyttää laitteen sijaintia Vahdin käyttämiseen."
 }

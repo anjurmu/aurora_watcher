@@ -5,6 +5,8 @@ import 'package:aurora_watcher/data/station.dart';
 import 'package:aurora_watcher/data/weather.dart';
 import 'package:aurora_watcher/data/weather_repository.dart';
 import 'package:aurora_watcher/l10n/app_localizations.dart';
+import 'package:aurora_watcher/util/location_util.dart';
+import 'package:aurora_watcher/views/widgets/location_permission_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 class MyLocationPage extends StatefulWidget {
@@ -20,6 +22,7 @@ class _MyLocationPageState extends State<MyLocationPage> {
   Aurora? aurora;
   bool loadingWeather = true;
   bool loadingAurora = true;
+  bool locationPermission = false;
   String? error;
   String? forecastIcon;
 
@@ -29,8 +32,30 @@ class _MyLocationPageState extends State<MyLocationPage> {
   @override
   void initState() {
     super.initState();
+    loadLocationInfo();
+  }
+
+  Future<void> loadLocationInfo() async {
+    final hasPermission = await LocationUtil.handleLocationPermission();
+    if (!hasPermission) {
+      locationPermission = false;
+      setState(() {
+        loadingWeather = false;
+        loadingAurora = false;
+      });
+      return;
+    }
+    locationPermission = true;
+
     loadWeather(false);
     loadAurora();
+  }
+
+  Future<void> showLocationPermissionDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (_) => LocationPermissionDialogWidget(),
+    );
   }
 
   Future<void> loadWeather(bool resetStation) async {
@@ -114,7 +139,7 @@ class _MyLocationPageState extends State<MyLocationPage> {
         } else {
           return Text(
             AppLocalizations.of(context)!.noAurora,
-            style: TextStyle(fontSize: 26),
+            style: TextStyle(color: Colors.white, fontSize: 26),
           );
         }
       }
@@ -128,6 +153,8 @@ class _MyLocationPageState extends State<MyLocationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     if (loadingWeather || loadingAurora) {
       return Center(
         child: const CircularProgressIndicator(),
@@ -153,63 +180,103 @@ class _MyLocationPageState extends State<MyLocationPage> {
       ),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                iconSize: 50,
-                icon: Icon(Icons.restart_alt),
-                onPressed: () {
-                  setState(() {
-                    loadingAurora = true;
-                    loadingWeather = true;
-                    loadWeather(true);
-                    loadAurora();
-                  });
-                },
-              ),
-            ],
-          ),
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  getAuroraChance(context),
-                  Text(
-                    AppLocalizations.of(context)!.weatherStation,
-                    style: KTextStyle.descriptionText,
+          if (!locationPermission) ...[
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        loc.locationDisabled,
+                        style: KTextStyle.infoText,
+                      ),
+                      IconButton(
+                        onPressed: () => showLocationPermissionDialog(context),
+                        icon: Icon(Icons.settings),
+                        iconSize: 50,
+                      ),
+                    ],
                   ),
-                  Text(
-                    station!.name,
-                    style: KTextStyle.titleText,
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    AppLocalizations.of(context)!.temperature,
-                    style: KTextStyle.infoText,
-                  ),
-                  Text(
-                    "${weather!.temperature.toString()} °C",
-                    style: TextStyle(fontSize: 40),
-                  ),
-                  Text(
-                    AppLocalizations.of(context)!.cloudiness,
-                    style: KTextStyle.infoText,
-                  ),
-                  forecastIcon != null
-                      ? Image.asset(
-                          forecastIcon!,
-                          width: 200,
-                        )
-                      : const Icon(
-                          Icons.question_mark,
-                          size: 100,
-                        ),
-                ],
+                ),
               ),
             ),
-          ),
+          ],
+          if (locationPermission) ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: IconButton(
+                    iconSize: 50,
+                    icon: Icon(Icons.restart_alt),
+                    onPressed: () {
+                      setState(() {
+                        loadingAurora = true;
+                        loadingWeather = true;
+                        loadWeather(true);
+                        loadAurora();
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      getAuroraChance(context),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        loc.weatherStation,
+                        style: KTextStyle.descriptionText,
+                      ),
+                      Text(
+                        station!.name,
+                        style: KTextStyle.titleText,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        loc.temperature,
+                        style: KTextStyle.infoText,
+                      ),
+                      Text(
+                        "${weather!.temperature.toString()} °C",
+                        style: TextStyle(fontSize: 40),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        loc.cloudiness,
+                        style: KTextStyle.infoText,
+                      ),
+                      forecastIcon != null
+                          ? Image.asset(
+                              forecastIcon!,
+                              width: 200,
+                            )
+                          : const Icon(
+                              Icons.question_mark,
+                              size: 100,
+                            ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );

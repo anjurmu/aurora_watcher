@@ -3,8 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
 
 class WeatherUtil {
-  // Default arvo Rovaniemen rautatieasema
-  static Future<Weather> fetchLatestObservation({int fmisid = 101928}) async {
+  static Future<Weather> fetchLatestObservation(int fmisid) async {
     final now = truncateToMinutes(DateTime.now().toUtc());
     final startTime = truncateToMinutes(now.subtract(const Duration(hours: 2)));
 

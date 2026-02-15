@@ -3,7 +3,9 @@ import 'package:aurora_watcher/data/aurora_repository.dart';
 import 'package:aurora_watcher/data/constants.dart';
 import 'package:aurora_watcher/l10n/app_localizations.dart';
 import 'package:aurora_watcher/util/database_service.dart';
+import 'package:aurora_watcher/util/location_util.dart';
 import 'package:aurora_watcher/util/notification_util.dart';
+import 'package:aurora_watcher/views/widgets/location_permission_dialog_widget.dart';
 import 'package:aurora_watcher/views/widgets/notification_permission_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +20,7 @@ class _WatcherPageState extends State<WatcherPage> {
   bool isSubscribed = false;
   Aurora? aurora;
   bool loading = true;
+  bool locationPermission = false;
   String? error;
 
   final AuroraRepository _auroraRepository = AuroraRepository();
@@ -32,6 +35,17 @@ class _WatcherPageState extends State<WatcherPage> {
   // Ladataan revontulitiedot databasesta
   Future<void> loadAurora() async {
     try {
+      // Tarkistetaan, onko lupaa käyttää laitteen sijaintia
+      final hasPermission = await LocationUtil.handleLocationPermission();
+      if (!hasPermission) {
+        locationPermission = false;
+        setState(() {
+          loading = false;
+        });
+        return;
+      }
+      locationPermission = true;
+
       aurora = await _auroraRepository.getAurora();
       if (aurora == null) {
         error = "No aurora data";
@@ -61,7 +75,7 @@ class _WatcherPageState extends State<WatcherPage> {
         await NotificationUtil.checkNotificationPermission();
     if (!notificationPermission) {
       // ignore: use_build_context_synchronously
-      await showPermissionDialog(context);
+      await showNotificationPermissionDialog(context);
       return;
     }
     await DatabaseService().toggleSubscription(
@@ -70,10 +84,17 @@ class _WatcherPageState extends State<WatcherPage> {
     loadState();
   }
 
-  Future<void> showPermissionDialog(BuildContext context) async {
+  Future<void> showNotificationPermissionDialog(BuildContext context) async {
     await showDialog(
       context: context,
       builder: (_) => NotificationPermissionDialogWidget(),
+    );
+  }
+
+  Future<void> showLocationPermissionDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (_) => LocationPermissionDialogWidget(),
     );
   }
 
@@ -89,7 +110,7 @@ class _WatcherPageState extends State<WatcherPage> {
 
     if (error != null) {
       return Center(
-        child: Text("Virhe: $error"),
+        child: Text("Error: $error"),
       );
     }
 
@@ -118,7 +139,9 @@ class _WatcherPageState extends State<WatcherPage> {
               scale: 1.5,
               child: Switch(
                 value: isSubscribed,
-                onChanged: (value) => toggle(context),
+                onChanged: locationPermission
+                    ? (value) => toggle(context)
+                    : null,
               ),
             ),
             SizedBox(height: 15),
@@ -128,15 +151,28 @@ class _WatcherPageState extends State<WatcherPage> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 30),
-            Text(
-              loc.closestAurora,
-              style: KTextStyle.infoText,
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              aurora!.name,
-              style: KTextStyle.infoText,
-            ),
+            if (locationPermission) ...[
+              Text(
+                loc.closestAurora,
+                style: KTextStyle.infoText,
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                aurora!.name,
+                style: KTextStyle.infoText,
+              ),
+            ],
+            if (!locationPermission) ...[
+              Text(
+                loc.locationDisabled,
+                style: KTextStyle.infoText,
+              ),
+              IconButton(
+                onPressed: () => showLocationPermissionDialog(context),
+                icon: Icon(Icons.settings),
+                iconSize: 50,
+              ),
+            ],
           ],
         ),
       ),

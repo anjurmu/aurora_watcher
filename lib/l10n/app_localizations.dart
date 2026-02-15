@@ -191,6 +191,18 @@ abstract class AppLocalizations {
   /// **'Open settings'**
   String get openSettings;
 
+  /// No description provided for @locationPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location disabled'**
+  String get locationPermissionTitle;
+
+  /// No description provided for @locationPermissionContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Please allow device\'s location from the app settings.'**
+  String get locationPermissionContent;
+
   /// No description provided for @watcherDescription.
   ///
   /// In en, this message translates to:
@@ -202,6 +214,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Closest Aurora station: '**
   String get closestAurora;
+
+  /// No description provided for @locationDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Location disabled, please allow app to use device\'s location to use Watcher.'**
+  String get locationDisabled;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -23,17 +23,20 @@ class WeatherRepository {
       if (userMoved || resetStation) {
         await fetchNearestStation(position);
 
+        weather = await WeatherUtil.fetchLatestObservation(
+          station!.fmisid,
+        );
+
         FmiStationUtil.saveStation(station!);
         LocationUtil.saveUserLocation(position.latitude, position.longitude);
 
-        weather = await WeatherUtil.fetchLatestObservation(
-          fmisid: station!.fmisid,
-        );
         return weather;
       }
+    } else {
+      return null;
     }
 
-    if (!weatherExpired()) {
+    if (!weatherExpired() && weather != null) {
       return weather;
     }
 
@@ -52,10 +55,10 @@ class WeatherRepository {
     station = await FmiStationUtil.loadStation();
     if (station != null) {
       weather = await WeatherUtil.fetchLatestObservation(
-        fmisid: station!.fmisid,
+        station!.fmisid,
       );
     } else {
-      weather = await WeatherUtil.fetchLatestObservation();
+      weather = null;
     }
   }
 

@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
       ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.greenAccent,
+          seedColor: Colors.green,
           brightness: Brightness.dark,
         ),
       ),

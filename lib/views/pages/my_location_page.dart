@@ -130,21 +130,25 @@ class _MyLocationPageState extends State<MyLocationPage> {
           return Text(
             AppLocalizations.of(context)!.highAurora,
             style: TextStyle(color: Colors.red, fontSize: 26),
+            textAlign: TextAlign.center,
           );
         } else if (aurora!.rValue! >= moderateChance) {
           return Text(
             AppLocalizations.of(context)!.moderateAurora,
             style: TextStyle(color: Colors.orange, fontSize: 26),
+            textAlign: TextAlign.center,
           );
         } else if (aurora!.rValue! >= aurora!.lowerLimit) {
           return Text(
             AppLocalizations.of(context)!.lowAurora,
             style: TextStyle(color: Colors.yellow, fontSize: 26),
+            textAlign: TextAlign.center,
           );
         } else {
           return Text(
             AppLocalizations.of(context)!.noAurora,
             style: TextStyle(color: Colors.white, fontSize: 26),
+            textAlign: TextAlign.center,
           );
         }
       }
@@ -270,11 +274,11 @@ class _MyLocationPageState extends State<MyLocationPage> {
                       forecastIcon != null
                           ? Image.asset(
                               forecastIcon!,
-                              width: 200,
+                              width: 100,
                             )
                           : const Icon(
                               Icons.question_mark,
-                              size: 100,
+                              size: 50,
                             ),
                     ],
                   ),

@@ -21,6 +21,24 @@ class AppLocalizationsFi extends AppLocalizations {
   String get myLocation => 'Oma Paikka';
 
   @override
+  String get watcherOff => 'Vahti on pois päältä';
+
+  @override
+  String get watcherOn => 'Vahti on päällä';
+
+  @override
+  String get fmiSource => 'Säähavainnot (lämpötila ja pilvisyys): ';
+
+  @override
+  String get fmiSourceLink => '© Ilmatieteen laitos (FMI), avoin data';
+
+  @override
+  String get auroraSource => 'Revontulitiedot: ';
+
+  @override
+  String get auroraSrouceLink => '© Ilmatieteen laitos – Avaruussää';
+
+  @override
   String get weatherStation => 'Sääasema:';
 
   @override

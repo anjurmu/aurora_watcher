@@ -37,6 +37,7 @@ class _MyLocationPageState extends State<MyLocationPage> {
 
   Future<void> loadLocationInfo() async {
     final hasPermission = await LocationUtil.handleLocationPermission();
+    if (!mounted) return;
     if (!hasPermission) {
       locationPermission = false;
       setState(() {
@@ -61,6 +62,7 @@ class _MyLocationPageState extends State<MyLocationPage> {
   Future<void> loadWeather(bool resetStation) async {
     try {
       weather = await _weatherRepository.getWeather(resetStation);
+      if (!mounted) return;
       station = _weatherRepository.station;
 
       setForecastIcon();
@@ -69,6 +71,7 @@ class _MyLocationPageState extends State<MyLocationPage> {
         loadingWeather = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         error = e.toString();
         loadingWeather = false;
@@ -79,6 +82,7 @@ class _MyLocationPageState extends State<MyLocationPage> {
   Future<void> loadAurora() async {
     try {
       aurora = await _auroraRepository.getAurora();
+      if (!mounted) return;
 
       if (aurora == null) {
         error = "No aurora data";
@@ -88,6 +92,7 @@ class _MyLocationPageState extends State<MyLocationPage> {
         loadingAurora = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         error = e.toString();
         loadingAurora = false;

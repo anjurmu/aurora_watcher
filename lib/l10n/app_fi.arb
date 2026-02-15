@@ -5,6 +5,14 @@
     "home": "Koti",
     "watcher": "Vahti",
     "myLocation": "Oma Paikka",
+
+    "watcherOff": "Vahti on pois päältä",
+    "watcherOn": "Vahti on päällä",
+    "fmiSource": "Säähavainnot (lämpötila ja pilvisyys): ",
+    "fmiSourceLink": "© Ilmatieteen laitos (FMI), avoin data",
+    "auroraSource": "Revontulitiedot: ",
+    "auroraSrouceLink": "© Ilmatieteen laitos – Avaruussää",
+
     "weatherStation": "Sääasema:",
     "temperature": "Lämpötila:",
     "cloudiness": "Pilvisyys:",

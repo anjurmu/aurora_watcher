@@ -21,6 +21,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myLocation => 'My Location';
 
   @override
+  String get watcherOff => 'Watcher is off';
+
+  @override
+  String get watcherOn => 'Watcher is on';
+
+  @override
+  String get fmiSource => 'Weather observations (temperature and cloudiness): ';
+
+  @override
+  String get fmiSourceLink => '© Finnish Meteorological Institute (FMI), open data';
+
+  @override
+  String get auroraSource => 'Aurora data: ';
+
+  @override
+  String get auroraSrouceLink => '© Finnish Meteorological Institute - Space Weather';
+
+  @override
   String get weatherStation => 'Weather station:';
 
   @override

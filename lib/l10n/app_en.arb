@@ -5,6 +5,14 @@
     "home": "Home",
     "watcher": "Watcher",
     "myLocation": "My Location",
+
+    "watcherOff": "Watcher is off",
+    "watcherOn": "Watcher is on",
+    "fmiSource": "Weather observations (temperature and cloudiness): ",
+    "fmiSourceLink": "© Finnish Meteorological Institute (FMI), open data",
+    "auroraSource": "Aurora data: ",
+    "auroraSrouceLink": "© Finnish Meteorological Institute - Space Weather",
+
     "weatherStation": "Weather station:",
     "temperature": "Temperature:",
     "cloudiness": "Cloudiness:",

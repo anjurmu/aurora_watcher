@@ -37,6 +37,7 @@ class _WatcherPageState extends State<WatcherPage> {
     try {
       // Tarkistetaan, onko lupaa käyttää laitteen sijaintia
       final hasPermission = await LocationUtil.handleLocationPermission();
+      if (!mounted) return;
       if (!hasPermission) {
         locationPermission = false;
         setState(() {
@@ -47,6 +48,7 @@ class _WatcherPageState extends State<WatcherPage> {
       locationPermission = true;
 
       aurora = await _auroraRepository.getAurora();
+      if (!mounted) return;
       if (aurora == null) {
         error = "No aurora data";
       }
@@ -55,6 +57,7 @@ class _WatcherPageState extends State<WatcherPage> {
         loading = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         error = e.toString();
         loading = false;
@@ -64,6 +67,7 @@ class _WatcherPageState extends State<WatcherPage> {
 
   Future<void> loadState() async {
     final subscribed = await DatabaseService().isSubscribed();
+    if (!mounted) return;
     setState(() {
       isSubscribed = subscribed;
     });
@@ -73,14 +77,17 @@ class _WatcherPageState extends State<WatcherPage> {
     // Tarkistetaan onko lupa lähettää ilmoituksia
     final bool notificationPermission =
         await NotificationUtil.checkNotificationPermission();
+    if (!mounted) return;
     if (!notificationPermission) {
       // ignore: use_build_context_synchronously
       await showNotificationPermissionDialog(context);
+      if (!mounted) return;
       return;
     }
     await DatabaseService().toggleSubscription(
       stationCode: aurora!.stationCode,
     );
+    if (!mounted) return;
     loadState();
   }
 

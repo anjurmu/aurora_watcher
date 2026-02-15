@@ -119,6 +119,42 @@ abstract class AppLocalizations {
   /// **'My Location'**
   String get myLocation;
 
+  /// No description provided for @watcherOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Watcher is off'**
+  String get watcherOff;
+
+  /// No description provided for @watcherOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Watcher is on'**
+  String get watcherOn;
+
+  /// No description provided for @fmiSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather observations (temperature and cloudiness): '**
+  String get fmiSource;
+
+  /// No description provided for @fmiSourceLink.
+  ///
+  /// In en, this message translates to:
+  /// **'© Finnish Meteorological Institute (FMI), open data'**
+  String get fmiSourceLink;
+
+  /// No description provided for @auroraSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Aurora data: '**
+  String get auroraSource;
+
+  /// No description provided for @auroraSrouceLink.
+  ///
+  /// In en, this message translates to:
+  /// **'© Finnish Meteorological Institute - Space Weather'**
+  String get auroraSrouceLink;
+
   /// No description provided for @weatherStation.
   ///
   /// In en, this message translates to:

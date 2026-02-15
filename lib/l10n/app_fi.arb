@@ -1,4 +1,6 @@
 {
+    "@@locale": "fi",
+
     "appTitle": "RevontuliVahti",
     "home": "Koti",
     "watcher": "Vahti",
@@ -6,9 +8,18 @@
     "weatherStation": "Sääasema:",
     "temperature": "Lämpötila:",
     "cloudiness": "Pilvisyys:",
+
     "noAurora": "Revontulet epätodennäköisiä",
     "lowAurora": "Pieni mahdollisuus revontulille",
     "moderateAurora": "Kohtalainen mahdollisuus revontulille",
     "highAurora": "Suuri mahdollisuus revontulille",
-    "noAuroraData": "Ei revontulitietoja"
+    "noAuroraData": "Ei revontulitietoja",
+
+    "notificationPermissionTitle": "Ilmoitukset pois käytöstä",
+    "notificationPermissionContent": "Salli ilmoitukset sovelluksen asetuksista, jotta voit saada hälytyksiä.",
+    "cancel": "Peruuta",
+    "openSettings": "Avaa asetukset",
+
+    "watcherDescription": "Lähettää ilmoituksen kun revontulten mahdollisuus on kohtalainen tai korkeampi lähimmällä revontuliasemalla.",
+    "closestAurora": "Lähin revontuliasema: "
 }

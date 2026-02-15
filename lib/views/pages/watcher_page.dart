@@ -1,9 +1,10 @@
-import 'package:app_settings/app_settings.dart';
 import 'package:aurora_watcher/data/aurora.dart';
 import 'package:aurora_watcher/data/aurora_repository.dart';
+import 'package:aurora_watcher/data/constants.dart';
 import 'package:aurora_watcher/l10n/app_localizations.dart';
 import 'package:aurora_watcher/util/database_service.dart';
 import 'package:aurora_watcher/util/notification_util.dart';
+import 'package:aurora_watcher/views/widgets/notification_permission_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 class WatcherPage extends StatefulWidget {
@@ -72,30 +73,14 @@ class _WatcherPageState extends State<WatcherPage> {
   Future<void> showPermissionDialog(BuildContext context) async {
     await showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text("Ilmoitukset pois käytöstä"),
-        content: const Text(
-          "Salli ilmoitukset sovelluksen asetuksista, jotta voit saada hälytyksiä.",
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Peruuta"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              AppSettings.openAppSettings();
-            },
-            child: const Text("Avaa asetukset"),
-          ),
-        ],
-      ),
+      builder: (_) => NotificationPermissionDialogWidget(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     if (loading) {
       return Center(
         child: const CircularProgressIndicator(),
@@ -119,14 +104,41 @@ class _WatcherPageState extends State<WatcherPage> {
           ),
         ),
       ),
-      child: Column(
-        children: [
-          Text(AppLocalizations.of(context)!.watcher),
-          Switch(
-            value: isSubscribed,
-            onChanged: (value) => toggle(context),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              loc.watcher,
+              style: KTextStyle.titleText,
+            ),
+            SizedBox(height: 10),
+            Transform.scale(
+              scale: 1.5,
+              child: Switch(
+                value: isSubscribed,
+                onChanged: (value) => toggle(context),
+              ),
+            ),
+            SizedBox(height: 15),
+            Text(
+              loc.watcherDescription,
+              style: KTextStyle.descriptionText,
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 30),
+            Text(
+              loc.closestAurora,
+              style: KTextStyle.infoText,
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              aurora!.name,
+              style: KTextStyle.infoText,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,6 @@
 {
+    "@@locale": "en",
+
     "appTitle": "Aurora Watcher",
     "home": "Home",
     "watcher": "Watcher",
@@ -6,9 +8,18 @@
     "weatherStation": "Weather station:",
     "temperature": "Temperature:",
     "cloudiness": "Cloudiness:",
+
     "noAurora": "Aurora unlikely",
     "lowAurora": "Low chance for aurora",
     "moderateAurora": "Moderate chance for aurora",
     "highAurora": "High chance for aurora",
-    "noAuroraData": "Missing aurora data"
+    "noAuroraData": "Missing aurora data",
+
+    "notificationPermissionTitle": "Notifications disabled",
+    "notificationPermissionContent": "Please allow notifications from the app settings to reveive alerts.",
+    "cancel": "Cancel",
+    "openSettings": "Open settings",
+
+    "watcherDescription": "Sends notification when there is moderate or higher chance for aurora in closest Aurora station.",
+    "closestAurora": "Closest Aurora station: "
 }

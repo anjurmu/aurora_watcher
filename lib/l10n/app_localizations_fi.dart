@@ -43,4 +43,22 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get noAuroraData => 'Ei revontulitietoja';
+
+  @override
+  String get notificationPermissionTitle => 'Ilmoitukset pois käytöstä';
+
+  @override
+  String get notificationPermissionContent => 'Salli ilmoitukset sovelluksen asetuksista, jotta voit saada hälytyksiä.';
+
+  @override
+  String get cancel => 'Peruuta';
+
+  @override
+  String get openSettings => 'Avaa asetukset';
+
+  @override
+  String get watcherDescription => 'Lähettää ilmoituksen kun revontulten mahdollisuus on kohtalainen tai korkeampi lähimmällä revontuliasemalla.';
+
+  @override
+  String get closestAurora => 'Lähin revontuliasema: ';
 }

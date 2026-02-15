@@ -43,4 +43,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noAuroraData => 'Missing aurora data';
+
+  @override
+  String get notificationPermissionTitle => 'Notifications disabled';
+
+  @override
+  String get notificationPermissionContent => 'Please allow notifications from the app settings to reveive alerts.';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get openSettings => 'Open settings';
+
+  @override
+  String get watcherDescription => 'Sends notification when there is moderate or higher chance for aurora in closest Aurora station.';
+
+  @override
+  String get closestAurora => 'Closest Aurora station: ';
 }

@@ -166,6 +166,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Missing aurora data'**
   String get noAuroraData;
+
+  /// No description provided for @notificationPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications disabled'**
+  String get notificationPermissionTitle;
+
+  /// No description provided for @notificationPermissionContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Please allow notifications from the app settings to reveive alerts.'**
+  String get notificationPermissionContent;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get openSettings;
+
+  /// No description provided for @watcherDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Sends notification when there is moderate or higher chance for aurora in closest Aurora station.'**
+  String get watcherDescription;
+
+  /// No description provided for @closestAurora.
+  ///
+  /// In en, this message translates to:
+  /// **'Closest Aurora station: '**
+  String get closestAurora;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

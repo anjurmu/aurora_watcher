@@ -1,10 +1,10 @@
-import { setGlobalOptions } from "firebase-functions";
-import { onSchedule } from "firebase-functions/v2/scheduler";
+import {setGlobalOptions} from "firebase-functions";
+import {onSchedule} from "firebase-functions/v2/scheduler";
 import * as logger from "firebase-functions/logger";
 import * as admin from "firebase-admin";
 import axios from "axios";
 
-setGlobalOptions({ maxInstances: 10 });
+setGlobalOptions({maxInstances: 10});
 
 interface AuroraStation {
   "Aika": string;
@@ -25,26 +25,31 @@ admin.initializeApp();
 export const fetchAuroraData = onSchedule(
   {
     schedule: "every 5 minutes",
-    region: "europe-north1",
+    region: "europe-west1",
     memory: "256MiB",
   },
   async () => {
     try {
+      // Haetaan tiedot revontulten aktiivisuudesta API:sta
       const response = await axios.get<ApiResponse>(
         "https://space.fmi.fi/MIRACLE/RWC/data/r_index_latest_fi.json",
-        { timeout: 5000 }
+        {timeout: 5000}
       );
 
       const stations = response.data.data;
-
       const updates: Record<string, unknown> = {};
+      const now = Date.now();
+      const COOLDOWN_MS = 30 * 60 * 1000; // 30 min
 
-      const COOLDOWN_MS = 30 * 60 * 1000; // 30 minuuttia
-      const NOW = Date.now();
-
+      // Käydään asemat läpi
       for (const stationCode in stations) {
+        if (!Object.prototype.hasOwnProperty.call(stations, stationCode)) {
+          continue;
+        }
+
         const station = stations[stationCode];
 
+        // Aseman revontulitiedot asettaminen
         updates[`aurora/${stationCode}`] = {
           time: station["Aika"],
           rValue: station["R-luku"],
@@ -53,48 +58,56 @@ export const fetchAuroraData = onSchedule(
           name: station["Asema"],
           lat: station["Leveyspiiri"],
           lon: station["Pituuspiiri"],
-          updatedAt: NOW,
+          updatedAt: now,
         };
 
-        const moderateChance: number = station["Alempi raja-arvo"] + (station["Ylempi raja-arvo"] - station["Alempi raja-arvo"]) / 2;
+        // Ylä- ja ala-raja arvojen puolivälin laskeminen
+        // Käytetään ilmoituksen rajana
+        const moderateChance =
+          station["Alempi raja-arvo"] +
+          (station["Ylempi raja-arvo"] - station["Alempi raja-arvo"]) / 2;
 
-        if (station["R-luku"] !== null && station["R-luku"] >=  moderateChance) {
+        // Tarkistetaan ylittääkö aseman R-luku moderateChance raja-arvon
+        if (station["R-luku"] !== null && station["R-luku"] >= moderateChance) {
+          const cooldownRef =
+            admin.database().ref(`auroraCooldown/${stationCode}`);
+          const cooldownSnap = await cooldownRef.get();
+          const lastAlertAt = cooldownSnap.exists() ?
+            cooldownSnap.val().lastAlertAt : null;
 
-          const cooldownRef = admin.database().ref(`auroraCooldown/${stationCode}`);
-          const cooldownSnapshot = await cooldownRef.get();
-          
-          const lastAlertAt = cooldownSnapshot.exists() ? cooldownSnapshot.val().lastAlertAt : null;
-
-          if (lastAlertAt && NOW - lastAlertAt < COOLDOWN_MS) {
+          // Tarkistetaan, onko viime ilmoituksesta kulunut tarpeeksi aikaa
+          if (lastAlertAt && now - lastAlertAt < COOLDOWN_MS) {
             logger.info("Cooldown active for ", stationCode);
             continue;
           }
 
-          let titleText: string = "Aurora Alert";
-          let bodyText: string = "Moderate chance for aurora";
+          const titleText = "Aurora Alert";
+          const bodyText =
+            station["R-luku"] >= station["Ylempi raja-arvo"] ?
+              "High chance for aurora" :
+              "Moderate chance for aurora";
 
-          if (station["R-luku"] >= station["Ylempi raja-arvo"]) {
-            bodyText = "High chance for aurora";
-          }
-
+          // Lähetetään ilmoitus kaikille aseman topicciin subscribaneille
           try {
-          const messageId = await admin.messaging().send({
-            topic: stationCode,
-            notification: {
-              title: titleText,
-              body: bodyText,
-            }
-          });
+            const messageId = await admin.messaging().send({
+              topic: stationCode,
+              notification: {
+                title: titleText,
+                body: bodyText,
+              },
+            });
 
-          logger.info("Aurora alert: ", messageId);
+            logger.info("Aurora alert: ", messageId);
 
-          await cooldownRef.set({lastAlertAt: NOW});
-        } catch (e) {
-          logger.error("Push failed", e);
-        }
+            // Tallennetaan ilmoituksen ajankohta tietokantaan
+            await cooldownRef.set({lastAlertAt: now});
+          } catch (e) {
+            logger.error("Push failed", e);
+          }
         }
       }
 
+      // Päivitetään kaikkien asemien revontulitiedot
       await admin.database().ref().update(updates);
 
       logger.info("Aurora data päivitetty");

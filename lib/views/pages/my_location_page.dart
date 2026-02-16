@@ -186,117 +186,127 @@ class _MyLocationPageState extends State<MyLocationPage> {
       );
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/aurora_background_2_1080x1920.webp"),
-          fit: BoxFit.cover,
-          colorFilter: ColorFilter.mode(
-            Colors.black.withValues(alpha: 0.35),
-            BlendMode.darken,
-          ),
+    // Pienellä näytöllä pilvisyyden ikonin padding saattaa mennä hiukan alareunasta yli,
+    // jolloin tulee overflow
+    // Tämän takia SignleChildScrollView rakenne ja physicsillä estetty scrollaaminen
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height,
         ),
-      ),
-      child: Column(
-        children: [
-          if (!locationPermission) ...[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        loc.locationDisabled,
-                        style: KTextStyle.infoText,
-                      ),
-                      IconButton(
-                        onPressed: () => showLocationPermissionDialog(context),
-                        icon: Icon(Icons.settings),
-                        iconSize: 50,
-                      ),
-                    ],
-                  ),
-                ),
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                "assets/images/aurora_background_2_1080x1920.webp",
+              ),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                Colors.black.withValues(alpha: 0.35),
+                BlendMode.darken,
               ),
             ),
-          ],
-          if (locationPermission) ...[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
+          ),
+          child: Column(
+            children: [
+              if (!locationPermission) ...[
                 Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: IconButton(
-                    iconSize: 50,
-                    icon: Icon(Icons.restart_alt),
-                    onPressed: () {
-                      setState(() {
-                        loadingAurora = true;
-                        loadingWeather = true;
-                        loadWeather(true);
-                        loadAurora();
-                      });
-                    },
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          loc.locationDisabled,
+                          style: KTextStyle.infoText,
+                        ),
+                        IconButton(
+                          onPressed: () =>
+                              showLocationPermissionDialog(context),
+                          icon: Icon(Icons.settings),
+                          iconSize: 50,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      getAuroraChance(context),
-                      SizedBox(
-                        height: 30,
+              if (locationPermission) ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: IconButton(
+                        iconSize: 50,
+                        icon: Icon(Icons.restart_alt),
+                        onPressed: () {
+                          setState(() {
+                            loadingAurora = true;
+                            loadingWeather = true;
+                            loadWeather(true);
+                            loadAurora();
+                          });
+                        },
                       ),
-                      Text(
-                        loc.weatherStation,
-                        style: KTextStyle.descriptionText,
-                      ),
-                      Text(
-                        station!.name,
-                        style: KTextStyle.titleText,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        loc.temperature,
-                        style: KTextStyle.infoText,
-                      ),
-                      Text(
-                        "${weather!.temperature.toString()} °C",
-                        style: TextStyle(fontSize: 40),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        loc.cloudiness,
-                        style: KTextStyle.infoText,
-                      ),
-                      forecastIcon != null
-                          ? Image.asset(
-                              forecastIcon!,
-                              width: 100,
-                            )
-                          : const Icon(
-                              Icons.question_mark,
-                              size: 50,
-                            ),
-                    ],
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        getAuroraChance(context),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Text(
+                          loc.weatherStation,
+                          style: KTextStyle.descriptionText,
+                        ),
+                        Text(
+                          station!.name,
+                          style: KTextStyle.titleText,
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          loc.temperature,
+                          style: KTextStyle.infoText,
+                        ),
+                        Text(
+                          "${weather!.temperature.toString()} °C",
+                          style: TextStyle(fontSize: 40),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          loc.cloudiness,
+                          style: KTextStyle.infoText,
+                        ),
+                        forecastIcon != null
+                            ? Image.asset(
+                                forecastIcon!,
+                                width: 100,
+                              )
+                            : const Icon(
+                                Icons.question_mark,
+                                size: 50,
+                              ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ],
-        ],
+              ],
+            ],
+          ),
+        ),
       ),
     );
   }

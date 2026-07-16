@@ -95,6 +95,24 @@ abstract class AppLocalizations {
     Locale('fi')
   ];
 
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email:'**
+  String get email;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password:'**
+  String get password;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
+
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:

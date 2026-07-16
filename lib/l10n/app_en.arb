@@ -1,6 +1,10 @@
 {
     "@@locale": "en",
 
+    "email": "Email:",
+    "password": "Password:",
+    "login": "Login",
+
     "appTitle": "Aurora Watcher",
     "home": "Home",
     "watcher": "Watcher",

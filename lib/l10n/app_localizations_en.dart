@@ -9,6 +9,15 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get email => 'Email:';
+
+  @override
+  String get password => 'Password:';
+
+  @override
+  String get login => 'Login';
+
+  @override
   String get appTitle => 'Aurora Watcher';
 
   @override

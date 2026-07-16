@@ -1,6 +1,6 @@
 import 'package:aurora_watcher/firebase_options.dart';
+import 'package:aurora_watcher/util/auth_gate.dart';
 import 'package:aurora_watcher/util/notification_util.dart';
-import 'package:aurora_watcher/views/widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
           brightness: Brightness.dark,
         ),
       ),
-      home: WidgetTree(),
+      home: AuthGate(),
     );
   }
 }

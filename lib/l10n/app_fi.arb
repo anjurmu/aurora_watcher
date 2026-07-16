@@ -1,6 +1,10 @@
 {
     "@@locale": "fi",
 
+    "email": "Sähköposti:",
+    "password": "Salasana:",
+    "login": "Kirjaudu",
+
     "appTitle": "RevontuliVahti",
     "home": "Koti",
     "watcher": "Vahti",

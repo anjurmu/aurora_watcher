@@ -9,6 +9,15 @@ class AppLocalizationsFi extends AppLocalizations {
   AppLocalizationsFi([String locale = 'fi']) : super(locale);
 
   @override
+  String get email => 'Sähköposti:';
+
+  @override
+  String get password => 'Salasana:';
+
+  @override
+  String get login => 'Kirjaudu';
+
+  @override
   String get appTitle => 'RevontuliVahti';
 
   @override
